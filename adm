@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# Directorio donde viven los scripts fuente
+COMANDOS_DIR="/home/enoc-colomer/Documentos/Gestor-Comandos-CLI/comandos_src"
+
+CATEGORIA=$1
+SUBCOMANDO=$2
+
+# Ayuda Global
+mostrar_ayuda_global() {
+    echo "============================================="
+    echo "   🛡️ CLI MAESTRO: ADMIN-UBUNTU (adm)"
+    echo "============================================="
+    echo "Uso: adm <categoría> <subcomando> [argumentos]"
+    echo ""
+    echo "Categorías disponibles:"
+    echo "  🔹 sistema   : Diagnóstico, recursos y actualizaciones."
+    echo "  🔹 archivos  : Navegación y manipulación de archivos."
+    echo "  🔹 ia        : Gestión de Inteligencias Artificiales."
+    echo ""
+    echo "Para ver los subcomandos de una categoría, escribe:"
+    echo "  adm <categoría> (Ejemplo: adm sistema)"
+    echo "============================================="
+}
+
+# Mostrar ayuda dinámica por categoría
+mostrar_ayuda_categoria() {
+    local cat=$1
+    echo "============================================="
+    echo "   📁 CATEGORÍA: $cat"
+    echo "============================================="
+    echo "Subcomandos disponibles:"
+    
+    # Buscar todos los scripts que pertenecen a esta categoría
+    for script in "$COMANDOS_DIR"/adm-"$cat"-*.sh; do
+        if [ -f "$script" ]; then
+            nombre_script=$(basename "$script" .sh)
+            subcmd=${nombre_script#adm-$cat-}
+            echo "  🔸 adm $cat $subcmd"
+        fi
+    done
+    echo "============================================="
+}
+
+# Lógica del Enrutador
+if [ -z "$CATEGORIA" ] || [ "$CATEGORIA" == "ayuda" ] || [ "$CATEGORIA" == "help" ]; then
+    mostrar_ayuda_global
+    exit 0
+fi
+
+if [ -z "$SUBCOMANDO" ] || [ "$SUBCOMANDO" == "ayuda" ] || [ "$SUBCOMANDO" == "help" ]; then
+    # Verificar si existen scripts de esta categoría
+    if ls "$COMANDOS_DIR"/adm-"$CATEGORIA"-*.sh 1> /dev/null 2>&1; then
+        mostrar_ayuda_categoria "$CATEGORIA"
+    else
+        echo "❌ Categoría desconocida: '$CATEGORIA'."
+        mostrar_ayuda_global
+    fi
+    exit 0
+fi
+
+# Intentar ejecutar el subcomando
+SCRIPT_OBJETIVO="$COMANDOS_DIR/adm-${CATEGORIA}-${SUBCOMANDO}.sh"
+
+if [ -f "$SCRIPT_OBJETIVO" ]; then
+    # Pasar todos los argumentos restantes al script (ignorar cat y subcmd)
+    shift 2
+    bash "$SCRIPT_OBJETIVO" "$@"
+else
+    echo "❌ Error: El comando 'adm $CATEGORIA $SUBCOMANDO' no existe."
+    mostrar_ayuda_categoria "$CATEGORIA"
+    exit 1
+fi
