@@ -1,6 +1,9 @@
 #!/bin/bash
 # Descripción: Obtiene la IP Pública de internet del servidor
 
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+
 echo -e "\033[0;34mConsultando tu IP Pública de Internet...\033[0m"
 IP=$(curl -s --max-time 5 ifconfig.me)
 if [ -n "$IP" ]; then

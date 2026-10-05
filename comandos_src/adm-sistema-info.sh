@@ -1,5 +1,8 @@
 #!/bin/bash
 # Descripción: Muestra información general sobre el sistema operativo
+
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
 echo "💻 Información del Sistema:"
 if command -v neofetch &> /dev/null; then
     neofetch

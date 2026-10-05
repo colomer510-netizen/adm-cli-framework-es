@@ -1,5 +1,9 @@
 #!/bin/bash
 # Descripción: Cambia las dimensiones (ancho/alto) de una imagen
+
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+requerir_cmd "convert" "imagemagick"
 ENTRADA=$1
 RESOLUCION=$2
 SALIDA=$3

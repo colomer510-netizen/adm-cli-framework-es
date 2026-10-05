@@ -1,6 +1,9 @@
 #!/bin/bash
 # Descripción: Descarga un nuevo modelo de IA (Ej: adm ollama descargar mistral)
 
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+
 if [ -z "$1" ]; then
     echo -e "\033[0;33m⚠️ Uso: adm ollama descargar <nombre_del_modelo>\033[0m"
     echo "Ejemplos: llama3.2, mistral, phi3, codellama"

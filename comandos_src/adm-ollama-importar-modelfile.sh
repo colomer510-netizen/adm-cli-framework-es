@@ -1,6 +1,9 @@
 #!/bin/bash
 # Descripción: Crea un modelo a partir de un archivo Modelfile personalizado (con prompts y parámetros)
 
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+
 if [ "$#" -ne 2 ]; then
     echo -e "\033[0;33m⚠️ Uso: adm ollama importar-modelfile <nombre_del_modelo> <ruta_al_Modelfile>\033[0m"
     echo "Ejemplo: adm ollama importar-modelfile asistente_codigo ./Modelfile"

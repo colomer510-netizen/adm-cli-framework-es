@@ -1,8 +1,8 @@
 #!/bin/bash
 # Descripción: Elimina un comando existente de tu proyecto Gestor-Comandos-CLI de forma segura
 
-ROJO='\033[0;31m'; VERDE='\033[0;32m'; AZUL='\033[0;34m'; AMARILLO='\033[1;33m'; NC='\033[0m'
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
 
 CATEGORIA=$1
 SUBCOMANDO=$2
@@ -16,19 +16,16 @@ fi
 DESTINO="$SCRIPT_DIR/adm-${CATEGORIA}-${SUBCOMANDO}.sh"
 
 if [ ! -f "$DESTINO" ]; then
-    echo -e "${ROJO}❌ Error: El comando 'adm $CATEGORIA $SUBCOMANDO' no existe en tu proyecto.${NC}"
+    error "Error: El comando 'adm $CATEGORIA $SUBCOMANDO' no existe en tu proyecto."
     exit 1
 fi
 
-echo -e "${AMARILLO}⚠️ ADVERTENCIA: Estás a punto de eliminar permanentemente el comando:${NC}"
+aviso "ADVERTENCIA: Estás a punto de eliminar permanentemente el comando:"
 echo -e "${AZUL}👉 adm $CATEGORIA $SUBCOMANDO${NC}"
 echo -e "Archivo a borrar: $DESTINO"
 echo ""
 
-read -p "¿Estás completamente seguro? (s/n): " resp
-if [[ "$resp" == "s" ]]; then
-    rm -f "$DESTINO"
-    echo -e "${VERDE}✅ El comando ha sido desintegrado de tu sistema con éxito.${NC}"
-else
-    echo -e "Operación cancelada. El comando está a salvo."
-fi
+parsear_si "$@"; set -- "${ARGS[@]}"
+confirmar "¿Eliminar permanentemente 'adm $CATEGORIA $SUBCOMANDO'?" || { echo "Operación cancelada."; exit 1; }
+rm -f "$DESTINO"
+ok "El comando 'adm $CATEGORIA $SUBCOMANDO' ha sido eliminado."

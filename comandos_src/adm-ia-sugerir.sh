@@ -1,10 +1,12 @@
 #!/bin/bash
 # Descripción: Pide a la IA que te genere un comando de terminal específico
 
-ROJO='\033[0;31m'; VERDE='\033[0;32m'; AMARILLO='\033[1;33m'; NC='\033[0m'
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+requerir_cmd "ollama" "ollama"
 
 if ! command -v ollama &> /dev/null; then
-    echo -e "${ROJO}❌ Ollama no está instalado. Ejecuta primero: adm ia instalar${NC}"
+    error "Ollama no está instalado. Ejecuta primero: adm ia instalar"
     exit 1
 fi
 
@@ -24,7 +26,7 @@ COMANDO=$(ollama run llama3.2 "$PROMPT" | grep -v '```' | sed 's/^`//' | sed 's/
 echo -e "${VERDE}Comando sugerido:${NC}"
 echo -e "$COMANDO"
 echo ""
-read -p "¿Deseas ejecutar este comando ahora? (s/n): " resp
+read -r -p "¿Deseas ejecutar este comando ahora? (s/n): " resp
 if [[ "$resp" == "s" ]]; then
     eval "$COMANDO"
 fi

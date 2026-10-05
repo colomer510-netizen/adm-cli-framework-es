@@ -1,5 +1,8 @@
 #!/bin/bash
 # Descripción: Muestra datos limpios sobre el sistema operativo
+
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
 if [ -f /etc/os-release ]; then
     cat /etc/os-release | grep -E '^(NAME|VERSION|PRETTY_NAME)='
 fi

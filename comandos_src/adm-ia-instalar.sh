@@ -1,7 +1,8 @@
 #!/bin/bash
 # Descripción: Instala Ollama y descarga el modelo de IA base (llama3.2)
 
-ROJO='\033[0;31m'; VERDE='\033[0;32m'; AZUL='\033[0;34m'; AMARILLO='\033[1;33m'; NC='\033[0m'
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
 
 echo -e "${AZUL}=============================================${NC}"
 echo -e "${AZUL}   🧠 INSTALADOR DE CEREBRO IA (Ollama)      ${NC}"
@@ -11,16 +12,16 @@ if ! command -v ollama &> /dev/null; then
     echo -e "${AMARILLO}Ollama no está instalado. Iniciando instalación segura...${NC}"
     curl -fsSL https://ollama.com/install.sh | sh
 else
-    echo -e "${VERDE}✅ El motor Ollama ya está instalado en tu sistema.${NC}"
+    ok "El motor Ollama ya está instalado en tu sistema."
 fi
 
 echo -e "\n${AMARILLO}Verificando el modelo de lenguaje 'llama3.2'...${NC}"
 if ollama list | grep -q "llama3.2"; then
-    echo -e "${VERDE}✅ El modelo 'llama3.2' ya está listo para usarse.${NC}"
+    ok "El modelo 'llama3.2' ya está listo para usarse."
 else
     echo -e "${AMARILLO}Descargando el modelo 'llama3.2' (esto puede tardar unos minutos dependiendo de tu internet)...${NC}"
     ollama pull llama3.2
-    echo -e "${VERDE}✅ Modelo instalado correctamente.${NC}"
+    ok "Modelo instalado correctamente."
 fi
 echo -e "${AZUL}=============================================${NC}"
 echo -e "Ya puedes usar: adm ia chat, adm ia explicar, adm ia sugerir"

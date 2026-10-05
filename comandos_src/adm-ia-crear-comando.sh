@@ -1,8 +1,8 @@
 #!/bin/bash
 # Descripción: Pide a la IA que programe y agregue un comando nuevo al repositorio automáticamente
 
-ROJO='\033[0;31m'; VERDE='\033[0;32m'; AZUL='\033[0;34m'; AMARILLO='\033[1;33m'; NC='\033[0m'
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
 
 CATEGORIA=$1
 SUBCOMANDO=$2
@@ -18,12 +18,12 @@ fi
 DESTINO="$SCRIPT_DIR/adm-${CATEGORIA}-${SUBCOMANDO}.sh"
 
 if [ -f "$DESTINO" ]; then
-    echo -e "${ROJO}❌ Error: El comando 'adm $CATEGORIA $SUBCOMANDO' ya existe en tu proyecto.${NC}"
+    error "Error: El comando 'adm $CATEGORIA $SUBCOMANDO' ya existe en tu proyecto."
     exit 1
 fi
 
 if ! command -v ollama &> /dev/null; then
-    echo -e "${ROJO}❌ Ollama no está instalado. Ejecuta primero: adm ia instalar${NC}"
+    error "Ollama no está instalado. Ejecuta primero: adm ia instalar"
     exit 1
 fi
 
@@ -43,6 +43,6 @@ echo "$CODIGO" >> "$DESTINO"
 
 chmod +x "$DESTINO"
 
-echo -e "${VERDE}✅ ¡Magia realizada! El comando se ha programado e integrado a tu proyecto.${NC}"
+ok "¡Magia realizada! El comando se ha programado e integrado a tu proyecto."
 echo -e "Puedes ver tu nuevo comando usando: ${AMARILLO}adm $CATEGORIA ayuda${NC}"
 echo -e "Para ejecutarlo escribe: ${AMARILLO}adm $CATEGORIA $SUBCOMANDO${NC}"

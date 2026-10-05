@@ -1,6 +1,9 @@
 #!/bin/bash
 # Descripción: Configuración de energía y comportamiento al cerrar tapa
 
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+
 echo "============================================="
 echo "   ⚡ CONFIGURACIÓN DE ENERGÍA (Modo Servidor)"
 echo "============================================="
@@ -11,7 +14,7 @@ echo "3) Ver estado actual (Saber si el modo servidor está activo)"
 echo "4) Salir"
 echo "============================================="
 
-read -p "Elige una opción (1-4): " opcion
+read -r -p "Elige una opción (1-4): " opcion
 
 case $opcion in
     1)

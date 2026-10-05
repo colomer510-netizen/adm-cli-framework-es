@@ -1,12 +1,9 @@
 #!/bin/bash
 # Descripción: Generador profesional de plantillas para nuevos comandos
-# Uso: adm sistema crear-comando <categoria> <subcomando> "<descripción>"
 
-ROJO='\033[0;31m'
-VERDE='\033[0;32m'
-AZUL='\033[0;34m'
-AMARILLO='\033[1;33m'
-NC='\033[0m'
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+# Uso: adm sistema crear-comando <categoria> <subcomando> "<descripción>"
 
 if [ -z "$1" ] || [ -z "$2" ]; then
     echo -e "${ROJO}Error: Faltan argumentos.${NC}"
@@ -33,11 +30,6 @@ cat << 'TPL' > "$RUTA_ARCHIVO"
 # Autor: Generado por adm sistema crear-comando
 
 # Códigos de color profesionales
-ROJO='\033[0;31m'
-VERDE='\033[0;32m'
-AZUL='\033[0;34m'
-AMARILLO='\033[1;33m'
-NC='\033[0m'
 
 mostrar_ayuda() {
     echo -e "${AZUL}Uso:${NC} adm REEMPLAZAR_CAT REEMPLAZAR_SUB [opciones]"
@@ -54,7 +46,6 @@ echo -e "${VERDE}Ejecutando: REEMPLAZAR_DESC...${NC}"
 echo -e "${AMARILLO}TODO: Inserta aquí tu lógica en Bash.${NC}"
 
 # --- INICIO DE TU CÓDIGO ---
-
 
 # --- FIN DE TU CÓDIGO ---
 TPL

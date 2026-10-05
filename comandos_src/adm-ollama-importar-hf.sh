@@ -1,6 +1,9 @@
 #!/bin/bash
 # Descripción: Importa un modelo directamente desde un repositorio de HuggingFace
 
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+
 if [ "$#" -ne 2 ]; then
     echo -e "\033[0;33m⚠️ Uso: adm ollama importar-hf <nombre_para_el_modelo> <usuario_hf/repo_hf>\033[0m"
     echo "Ejemplo: adm ollama importar-hf mi_modelo bartowski/Qwen2.5-7B-Instruct-GGUF"

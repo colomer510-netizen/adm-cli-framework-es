@@ -1,6 +1,9 @@
 #!/bin/bash
 # Descripción: Busca archivos pesados en el directorio actual (Por defecto >500M)
 
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+
 RUTA=${1:-.}
 MINIMO=${2:-500M}
 echo -e "\033[1;33mBuscando archivos mayores a $MINIMO en $RUTA:\033[0m"

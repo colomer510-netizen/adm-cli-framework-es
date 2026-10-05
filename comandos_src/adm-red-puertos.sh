@@ -1,10 +1,12 @@
 #!/bin/bash
 # Descripción: Muestra los puertos de red abiertos y a la escucha
 
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+
 CYAN='\033[1;36m'
 GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m'
 
 echo -e "\n${CYAN}╭────────────────────────────────────────────────────────╮${NC}"
 echo -e "${CYAN}│${NC} 🚪 ${YELLOW}PUERTOS ABIERTOS Y A LA ESCUCHA${NC}                    ${CYAN}│${NC}"

@@ -1,16 +1,13 @@
 #!/bin/bash
 # Descripción: Gestiona el estado del Firewall (UFW)
 
-ROJO='\033[0;31m'; VERDE='\033[0;32m'; NC='\033[0m'
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
 
-if ! command -v ufw &> /dev/null; then
-    echo -e "${ROJO}UFW no está instalado.${NC}"
-    read -p "¿Instalar UFW? (s/n): " resp
-    if [[ "$resp" == "s" ]]; then sudo apt update && sudo apt install -y ufw; else exit 1; fi
-fi
+requerir_cmd "ufw" "ufw"
 
 if [ "$1" == "activar" ]; then
-    sudo ufw enable && echo -e "${VERDE}✅ Cortafuegos Activado.${NC}"
+    sudo ufw enable && ok "Cortafuegos Activado."
 elif [ "$1" == "desactivar" ]; then
     sudo ufw disable && echo -e "${ROJO}⚠️ Cortafuegos Desactivado.${NC}"
 else

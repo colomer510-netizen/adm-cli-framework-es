@@ -1,5 +1,8 @@
 #!/bin/bash
 # Descripción: Extrae el contenido de un archivo .tar.gz
+
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
 if [ -z "$1" ]; then
     echo "Uso: adm archivos descomprimir <archivo.tar.gz_o_zip>"
     exit 1

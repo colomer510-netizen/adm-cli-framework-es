@@ -1,6 +1,9 @@
 #!/bin/bash
 # Descripción: Instala un modelo personalizado desde un archivo .gguf
 
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+source "$SCRIPT_DIR/lib/comun.sh"
+
 if [ "$#" -ne 2 ]; then
     echo -e "\033[0;33m⚠️ Uso: adm ollama importar-gguf <nombre_para_el_modelo> <ruta_al_archivo.gguf>\033[0m"
     echo "Ejemplo: adm ollama importar-gguf mi_ia /Descargas/llama-3-8b.gguf"
