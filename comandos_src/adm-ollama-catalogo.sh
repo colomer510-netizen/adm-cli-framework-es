@@ -4,9 +4,6 @@
 SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
 source "$SCRIPT_DIR/lib/comun.sh"
 
-CYAN='\033[1;36m'
-GREEN='\033[1;32m'
-YELLOW='\033[1;33m'
 MAGENTA='\033[1;35m'
 
 echo -e "\n${CYAN}╭────────────────────────────────────────────────────────╮${NC}"

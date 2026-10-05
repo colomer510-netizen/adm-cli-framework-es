@@ -1,6 +1,7 @@
 #!/bin/bash
 # Biblioteca común para los comandos de adm. Uso: source "$(dirname "$(readlink -f "$0")")/lib/comun.sh"
 
+# shellcheck disable=SC2034
 ROJO='\033[0;31m'; VERDE='\033[0;32m'; AZUL='\033[0;34m'; AMARILLO='\033[1;33m'; NC='\033[0m'
 
 error() { echo -e "${ROJO}❌ $*${NC}" >&2; }

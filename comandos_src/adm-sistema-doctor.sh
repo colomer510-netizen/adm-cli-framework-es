@@ -44,7 +44,7 @@ for entry in "${HERRAMIENTAS[@]}"; do
   TOTAL=$((TOTAL + 1))
   if command -v "$bin" > /dev/null 2>&1; then
     version=$(command -v "$bin" > /dev/null && "$bin" --version 2>/dev/null | head -1 | cut -c1-50 || echo "instalado")
-    printf "  ${VERDE}✅ %-16s${NC} %-12s %s\n" "$bin" "[$cat]" "$desc"
+    printf "  ${VERDE}✅ %-16s${NC} %-12s %-40s %s\n" "$bin" "[$cat]" "$desc" "(v: $version)"
     OK=$((OK + 1))
   else
     printf "  ${ROJO}❌ %-16s${NC} %-12s %s\n" "$bin" "[$cat]" "$desc"
@@ -83,7 +83,7 @@ if [ "${FALTA}" -gt 0 ]; then
         ;;
       *)
         # Evitar duplicados de paquete
-        if [[ ! " ${APT_PKGS[*]} " =~ " ${pkg} " ]]; then
+        if [[ ! " ${APT_PKGS[*]} " =~  ${pkg}  ]]; then
           APT_PKGS+=("$pkg")
         fi
         ;;

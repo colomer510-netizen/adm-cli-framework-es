@@ -6,10 +6,7 @@ source "$SCRIPT_DIR/lib/comun.sh"
 
 DIR=${1:-.}
 
-CYAN='\033[1;36m'
 MAGENTA='\033[1;35m'
-GREEN='\033[1;32m'
-YELLOW='\033[1;33m'
 
 ARCHIVOS=$(find "$DIR" -type f 2>/dev/null | wc -l)
 CARPETAS=$(find "$DIR" -type d 2>/dev/null | wc -l)

@@ -4,10 +4,6 @@
 SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
 source "$SCRIPT_DIR/lib/comun.sh"
 
-CYAN='\033[1;36m'
-GREEN='\033[1;32m'
-YELLOW='\033[1;33m'
-RED='\033[1;31m'
 
 echo -e "\n${YELLOW}💾 ESTADO DE LOS DISCOS DE ALMACENAMIENTO:${NC}\n"
 

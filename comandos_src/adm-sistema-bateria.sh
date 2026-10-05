@@ -5,4 +5,4 @@ SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
 source "$SCRIPT_DIR/lib/comun.sh"
 
 echo -e "\033[0;34mInformación de la batería:\033[0m"
-upower -i $(upower -e | grep 'BAT') 2>/dev/null | grep -E "state|to\ full|to\ empty|percentage|capacity" || echo "No se encontró batería en este equipo."
+upower -i "$(upower -e | grep 'BAT')" 2>/dev/null | grep -E "state|to\ full|to\ empty|percentage|capacity" || echo "No se encontró batería en este equipo."
