@@ -1,4 +1,5 @@
 #!/bin/bash
+# Descripción: Crea un archivo de texto vacío
 if [ -z "$1" ]; then
     echo "❌ Uso correcto: adm-crear-archivo <nombre_archivo>"
     exit 1

@@ -1,29 +1,45 @@
-# 🛡️ Gestor de Comandos CLI (adm)
+# 🛡️ Gestor de Comandos CLI (`adm`)
 
-Un framework de línea de comandos en Bash con arquitectura modular. Este proyecto permite "españolizar" tu terminal de Linux centralizando tareas de sistema, manipulación de archivos y gestión de Inteligencias Artificiales mediante un solo comando maestro: `adm`.
-
----
-
-## 🌟 Características
-* **Modelo "Git":** Arquitectura modular dinámica. El enrutador principal lee los argumentos y lanza sub-scripts independientes.
-* **Menús Automáticos:** Si agregas un nuevo script, el menú de ayuda se actualiza solo sin tocar el código central.
-* **Comandos en Español:** Todos los comandos de Linux traducidos y agrupados bajo categorías lógicas (`sistema`, `archivos`, `ia`).
-* **Seguro y Aislado:** Funciona como un CLI profesional usando `~/.local/bin/`.
+Un framework moderno de línea de comandos en **Go + Bash** con arquitectura modular. Este proyecto permite "españolizar" y simplificar tu terminal de Linux centralizando tareas de administración de sistema, manipulación de archivos, redes, procesos, desarrollo, multimedia y gestión de Inteligencias Artificiales mediante un comando maestro: `adm`.
 
 ---
 
-## 🚀 Instalación
-Para instalar el sistema de comandos en tu computadora:
+## 🌟 Características Principales
 
-1. Abre tu terminal.
-2. Navega hasta esta carpeta.
-3. Ejecuta el instalador:
-   ```bash
-   ./instalar_comandos.sh
-   ```
-El instalador creará un enlace del script principal `adm` en `~/.local/bin/adm`.
+* **Núcleo de Alto Rendimiento (Go + Cobra):** El enrutador maestro está implementado en Go, ofreciendo una ejecución ultrarrápida, autocompletado nativo y manejo seguro de procesos.
+* **Modelo Modular ("Git Dispatcher"):** Cada subcomando es un script Bash independiente en `comandos_src/`. Si un comando falla, no afecta al resto.
+* **Descubrimiento Dinámico de Comandos:** Nuevos scripts añadidos a `comandos_src/` se registran en los menús de ayuda de forma instantánea sin necesidad de recompilar ni tocar el código Go.
+* **Transparencia Total de Flags:** Los flags y argumentos (ej. `-la`, `--opcion`, `--help`) se propagan intactos a los scripts Bash sin conflictos con el enrutador.
+* **Propagación de Códigos de Salida:** Se preserva el exit code real del script ejecutado, permitiendo encadenar comandos (`&&`, `||`) y usar `adm` en pipelines.
+* **Librería Común (`lib/comun.sh`):** Funciones reutilizables para manejo de colores, validación de dependencias externas (`requerir_cmd`), validación de IP y confirmación interactiva para comandos destructivos con flag `--si` / `-y`.
+* **Autocompletado Inteligente:** Soporte para autocompletado en Bash generado automáticamente mediante Cobra.
+* **Automatización y Tests:** `Makefile` completo para compilación, linting y tests unitarios en Go.
 
-Para desinstalarlo en cualquier momento, ejecuta:
+---
+
+## 🚀 Instalación y Desinstalación
+
+### Requisitos Previos
+* Linux (probado en Ubuntu / Debian y derivados).
+* Go 1.21+ (opcional para compilar desde fuentes; el instalador lo compila automáticamente si está presente).
+
+### Instalación Rápida
+Ejecuta el script de instalación en la raíz del proyecto:
+```bash
+./instalar_comandos.sh
+```
+O usando `make`:
+```bash
+make install
+```
+
+El instalador:
+1. Compila el binario `adm` optimizado.
+2. Crea el enlace en `~/.local/bin/adm`.
+3. Registra el autocompletado en tu sesión de Bash.
+
+### Desinstalación
+Para eliminar el comando y sus autocompletados del sistema:
 ```bash
 ./desinstalar_comandos.sh
 ```
@@ -32,27 +48,63 @@ Para desinstalarlo en cualquier momento, ejecuta:
 
 ## 💻 Uso Básico
 
-El uso general sigue el formato: `adm <categoría> <subcomando> [argumentos]`
-
-### Menú de Ayuda
+Formato general:
 ```bash
-adm
-# o
-adm ayuda
+adm <categoría> <subcomando> [opciones]
 ```
 
-### Ejemplos de uso
-* Ver el espacio del disco: `adm sistema espacio`
-* Ver procesos de RAM/CPU: `adm sistema memoria`
-* Copiar un archivo: `adm archivos copiar archivo1.txt /destino`
-* Abrir el gestor de Llama: `adm ia llama`
+### Menú de Ayuda y Categorías
+```bash
+adm             # Muestra la ayuda general y todas las categorías disponibles
+adm <categoría> # Muestra todos los subcomandos de dicha categoría
+```
+
+### Ejemplos de Comandos Populares
+* **Sistema:**
+  * Espacio en disco: `adm sistema espacio`
+  * Consumo de RAM y CPU: `adm sistema memoria`
+  * Información del sistema: `adm sistema info`
+* **Archivos:**
+  * Listar con flags nativos: `adm archivos listar -la`
+  * Buscar archivos grandes: `adm archivos buscar-grandes`
+  * Comprimir directorio: `adm archivos comprimir mi_carpeta`
+* **Red:**
+  * Ver IP local y pública: `adm red ip-local` / `adm red publica`
+  * Monitoreo de tráfico: `adm red monitor-trafico`
+* **Procesos:**
+  * Top consumidores de CPU: `adm procesos top-cpu`
+  * Ver puertos en uso: `adm procesos puertos`
+* **Inteligencia Artificial / Ollama:**
+  * Estado de Ollama: `adm ollama estado`
+  * Descargar modelo: `adm ollama descargar llama3.2`
+  * Asistente interactivo: `adm ia chat`
 
 ---
 
-## 🏗️ Agregar nuevos comandos
-Para añadir un nuevo comando, simplemente crea un script bash en la carpeta `comandos_src/` siguiendo esta nomenclatura:
-`adm-<categoria>-<nombre_comando>.sh`
+## 🏗️ Cómo Crear Nuevos Comandos
 
-El archivo maestro lo detectará automáticamente y estará listo para usarse. 
+Para agregar una nueva funcionalidad, crea un archivo Bash en `comandos_src/` siguiendo el patrón:
+```text
+comandos_src/adm-<categoria>-<subcomando>.sh
+```
 
-*Consulta el archivo **ARQUITECTURA.md** para más información sobre cómo funciona internamente.*
+Asegúrate de:
+1. Incluir la cabecera `# Descripción: <resumen en una línea>`.
+2. Usar `source "$(dirname "$(readlink -f "$0")")/lib/comun.sh"` para colores, confirmaciones y validaciones.
+3. Otorgarle permisos de ejecución: `chmod +x comandos_src/adm-<categoria>-<subcomando>.sh`.
+
+El enrutador lo detectará inmediatamente al escribir `adm <categoria>`.
+
+---
+
+## 🛠️ Desarrollo y Pruebas
+
+El proyecto cuenta con un `Makefile` para facilitar tareas de desarrollo:
+
+```bash
+make build    # Compila el binario adm
+make test     # Ejecuta las pruebas unitarias de Go (discovery_test.go)
+make vet      # Analiza el código Go con go vet
+make lint     # Verifica la sintaxis de todos los scripts Bash y corre shellcheck si está instalado
+make clean    # Limpia el binario generado
+```

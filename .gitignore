@@ -1,0 +1,9 @@
+# Binario compilado
+/adm
+/dist/
+
+# Backups y temporales
+*.bak
+*_backup
+*.swp
+*~
